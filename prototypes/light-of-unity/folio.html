@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Light of Unity · Folio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300..500&display=swap">
+<style>
+/* Layout: one coloured leaf per passage, in the order of the letter. The 2020 statement
+   sits large and upright; the older echo hangs beneath it, dated, in italic. */
+:root {
+  --sage: #86a98e;
+  --sage-deep: #7a9f84;
+  --forest: #2c4815;
+  --forest-deep: #213a0b;
+  --teal: #19704f;
+  --teal-deep: #0f6045;
+  --paper: #f0ebe5;
+  --paper-dim: rgba(240, 235, 229, .62);
+  --paper-faint: rgba(240, 235, 229, .22);
+
+  --display: "League Spartan", "Futura", "Century Gothic", system-ui, sans-serif;
+  --text: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+
+  --gutter-l: max(20px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(20px, env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--forest-deep);
+  color: var(--paper);
+  font-family: var(--display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+
+.leaf {
+  position: relative;
+  overflow: hidden;
+  padding-left: var(--gutter-l);
+  padding-right: var(--gutter-r);
+  padding-block: clamp(72px, 12vw, 160px);
+}
+.leaf[data-ground="sage"]   { background: radial-gradient(120% 90% at 85% 0%, #93b59a 0%, var(--sage) 45%, var(--sage-deep) 100%); }
+.leaf[data-ground="forest"] { background: radial-gradient(120% 90% at 85% 0%, #375617 0%, var(--forest) 45%, var(--forest-deep) 100%); }
+.leaf[data-ground="teal"]   { background: radial-gradient(120% 90% at 85% 0%, #237b58 0%, var(--teal) 45%, var(--teal-deep) 100%); }
+.inner { max-width: 1120px; margin: 0 auto; position: relative; }
+
+/* ---------- cover ---------- */
+.cover .inner { display: grid; gap: clamp(40px, 6vw, 72px); }
+.question {
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(3.6rem, 16.5vw, 13.5rem);
+  line-height: .8;
+  letter-spacing: -.055em;
+  color: var(--paper);
+}
+.question span { display: block; }
+.question span:nth-child(odd) { padding-left: .02em; }
+.provenance {
+  display: grid;
+  gap: 18px;
+  max-width: 34rem;
+  font-weight: 600;
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  line-height: 1.32;
+  letter-spacing: .005em;
+}
+.provenance p { margin: 0; }
+.provenance .note em { font-family: var(--text); font-weight: 400; font-size: 1.1em; }
+.begin {
+  justify-self: start;
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--paper-dim);
+}
+
+/* ---------- passages ---------- */
+.mark {
+  position: absolute;
+  top: -.14em; left: -.06em;
+  margin: 0;
+  font-family: var(--text);
+  font-weight: 400;
+  font-size: clamp(16rem, 42vw, 34rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--paper-faint);
+  pointer-events: none;
+  user-select: none;
+}
+.passage { position: relative; display: grid; gap: clamp(40px, 6vw, 80px); padding-top: clamp(96px, 16vw, 200px); }
+.kicker {
+  margin: 0;
+  display: flex; flex-wrap: wrap; gap: 6px 18px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--paper-dim);
+  font-variant-numeric: tabular-nums;
+}
+.statement {
+  margin: 0;
+  max-width: 21ch;
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.6vw, 3.9rem);
+  line-height: 1.04;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.statement p { margin: 0; }
+
+.echo {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 20px clamp(24px, 4vw, 56px);
+  align-items: start;
+  max-width: 980px;
+  margin-left: auto;
+}
+.year {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(3.4rem, 9vw, 7.5rem);
+  line-height: .82;
+  letter-spacing: -.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.distance {
+  display: block;
+  margin-top: 14px;
+  -webkit-text-stroke: 0;
+  color: var(--paper-dim);
+  font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  line-height: 1.3;
+}
+.echo-body { min-width: 0; display: grid; gap: 18px; padding-top: 6px; }
+.echo-body::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--paper-dim);
+  transform-origin: left;
+  transform: scaleX(var(--draw, 1));
+  transition: transform 1.2s cubic-bezier(.2, .7, .1, 1);
+}
+.echo blockquote { margin: 0; }
+.echo blockquote p {
+  margin: 0;
+  max-width: 60ch;
+  font-family: var(--text);
+  font-style: italic;
+  font-weight: 350;
+  font-size: clamp(1.1rem, 1.7vw, 1.38rem);
+  line-height: 1.5;
+  font-variation-settings: "opsz" 18;
+}
+.echo figcaption {
+  font-size: .82rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--paper-dim);
+  line-height: 1.5;
+}
+.echo cite { font-style: normal; color: var(--paper); }
+
+.armed .echo-body::before { --draw: 0; }
+.armed .in-view .echo-body::before { --draw: 1; }
+
+/* ---------- colophon ---------- */
+.colophon .inner { display: grid; gap: 32px; }
+.colophon h2 {
+  margin: 0;
+  font-size: .8rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--paper-dim);
+}
+.ledger { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--paper-faint); }
+.ledger li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 16px;
+  padding-block: 18px;
+  border-bottom: 1px solid var(--paper-faint);
+  font-size: 1rem; line-height: 1.4;
+}
+.ledger b { font-weight: 800; font-size: 1.4rem; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.ledger cite { font-family: var(--text); font-style: italic; font-size: 1.08em; }
+.ledger span { min-width: 0; }
+.back { font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--paper-dim); }
+
+@media (max-width: 640px) {
+  .echo { grid-template-columns: minmax(0, 1fr); }
+  .distance { display: inline-block; margin: 0 0 0 14px; vertical-align: middle; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .echo-body::before { transition: none; }
+  .armed .echo-body::before { --draw: 1; }
+}
+</style>
+</head>
+<body>
+<main id="folio"></main>
+<script src="content.js"></script>
+<script>
+(function () {
+  var U = window.UNITY;
+  var root = document.getElementById("folio");
+  var roman = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx"];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function cite(e) {
+    var s = esc(e.author) + ", <cite>" + esc(e.work) + "</cite>";
+    if (e.in) s += ", in <cite>" + esc(e.in) + "</cite>";
+    return s + " (" + e.year + ")";
+  }
+
+  var words = U.question.replace("?", "").toUpperCase().split(" ");
+  var lines = [words[0], words[1], words[2] + " " + words[3], words[4] + " " + words[5], words[6] + "?"];
+
+  var html = "";
+  html += '<section class="leaf cover" data-ground="sage"><div class="inner">' +
+    '<h1 class="question" aria-label="' + esc(U.question) + '">' + lines.map(function (l) { return "<span>" + esc(l) + "</span>"; }).join("") + "</h1>" +
+    '<div class="provenance"><p>The following messages were initially circulated in a letter from the ' + esc(U.letter.body) + ", dated " + esc(U.letter.dateLabel) + '.</p>' +
+    '<p class="note">' + esc(U.note).replace("in italics", "in <em>italics</em>") + "</p></div>" +
+    '<a class="begin" href="#' + U.entries[0].id + '">Begin <span aria-hidden="true">↓</span></a>' +
+    "</div></section>";
+
+  U.entries.forEach(function (en, i) {
+    html += '<section class="leaf" id="' + en.id + '" data-ground="' + en.ground + '"><div class="inner">' +
+      '<p class="mark" aria-hidden="true">“</p>' +
+      '<article class="passage">' +
+      '<p class="kicker"><span>Passage ' + roman[i] + " of " + roman[U.entries.length - 1] + "</span><span>" + esc(U.letter.dateLabel) + "</span></p>" +
+      '<blockquote class="statement"><p>' + esc(en.statement) + "</p></blockquote>";
+    if (en.echo) {
+      var gap = U.letter.year - en.echo.year;
+      html += '<figure class="echo">' +
+        '<p class="year">' + en.echo.year + '<span class="distance">' + gap + " years before the letter</span></p>" +
+        '<div class="echo-body"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote>" +
+        "<figcaption>" + cite(en.echo) + "</figcaption></div></figure>";
+    }
+    html += "</article></div></section>";
+  });
+
+  var dated = U.entries.filter(function (e) { return e.echo; }).map(function (e) { return e.echo; })
+    .sort(function (a, b) { return a.year - b.year; });
+  html += '<section class="leaf colophon" data-ground="forest"><div class="inner">' +
+    "<h2>Sources, in order of writing</h2><ol class=\"ledger\">" +
+    dated.map(function (e) {
+      return "<li><b>" + e.year + "</b><span>" + esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + "</span></li>";
+    }).join("") +
+    "<li><b>" + U.letter.year + "</b><span>" + esc(U.letter.body) + ", letter dated " + esc(U.letter.dateLabel) + "</span></li>" +
+    '</ol><a class="back" href="index.html">All variants</a></div></section>';
+
+  root.innerHTML = html;
+
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.body.classList.add("armed");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in-view"); io.unobserve(e.target); } });
+    }, { threshold: .25 });
+    document.querySelectorAll(".echo").forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

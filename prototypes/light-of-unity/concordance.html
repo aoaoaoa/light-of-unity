@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Light of Unity · Concordance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300..500&display=swap">
+<style>
+/* Layout: a parallel text. The 2020 letter runs down the left, each echo stands opposite
+   its passage on the right, and a span chart above measures how far back each echo reaches. */
+:root {
+  --ground: #e5ebe3;
+  --ink: #1d3210;
+  --muted: #5a6b52;
+  --rule: #bccab7;
+  --accent: #17694a;
+  --lift: #d8e2d5;
+
+  --display: "League Spartan", "Futura", "Century Gothic", system-ui, sans-serif;
+  --text: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #131f09; --ink: #ebe7de; --muted: #9aa98f; --rule: #33462a; --accent: #74c49b; --lift: #1c2c10;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #131f09; --ink: #ebe7de; --muted: #9aa98f; --rule: #33462a; --accent: #74c49b; --lift: #1c2c10;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--display);
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(48px, 8vw, 104px);
+  display: grid;
+  gap: clamp(48px, 7vw, 88px);
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.label {
+  margin: 0;
+  font-size: .74rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+header { display: grid; gap: 22px; }
+h1 {
+  margin: 0;
+  max-width: 12ch;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 8vw, 6.4rem);
+  line-height: .86;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.lede { margin: 0; max-width: 46rem; font-family: var(--text); font-size: clamp(1.08rem, 1.6vw, 1.28rem); line-height: 1.5; }
+.lede em { font-style: italic; }
+
+/* span chart */
+.span { display: grid; gap: 12px; }
+.span-scroll { overflow-x: auto; }
+.span svg { display: block; width: 100%; min-width: 560px; height: auto; }
+.span .axis { stroke: var(--ink); stroke-width: 1.5; }
+.span .tick { stroke: var(--rule); stroke-width: 1; }
+.span .tick-label { fill: var(--muted); font: 600 12px var(--display); letter-spacing: .08em; }
+.span .arc { fill: none; stroke: var(--rule); stroke-width: 2; transition: stroke .25s, stroke-width .25s; cursor: pointer; }
+.span .node { fill: var(--ground); stroke: var(--ink); stroke-width: 2; }
+.span .node.letter { fill: var(--ink); }
+.span .yr { fill: var(--ink); font: 800 18px var(--display); font-style: normal; letter-spacing: -.02em; }
+.span .who { fill: var(--muted); font: italic 400 16px var(--text); }
+.span g.on .arc { stroke: var(--accent); stroke-width: 3; }
+.span g.on .node { stroke: var(--accent); }
+
+/* parallel text */
+.cols-head, .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) 6.5rem minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 40px);
+}
+.cols-head { padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+.rows { display: grid; }
+.row {
+  padding-block: clamp(28px, 4vw, 48px);
+  border-bottom: 1px solid var(--rule);
+  transition: background .25s;
+}
+.row.on { background: linear-gradient(90deg, transparent, var(--lift) 30%, var(--lift) 70%, transparent); }
+.row > * { min-width: 0; }
+.statement {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+  line-height: 1.16;
+  letter-spacing: -.012em;
+  text-wrap: pretty;
+}
+.gutter { display: grid; align-content: start; gap: 6px; font-variant-numeric: tabular-nums; }
+.gutter b { font-weight: 800; font-size: 2rem; line-height: .9; letter-spacing: -.03em; color: var(--accent); }
+.gutter span { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); line-height: 1.35; }
+.echo { margin: 0; display: grid; gap: 14px; }
+.echo blockquote { margin: 0; }
+.echo p {
+  margin: 0;
+  font-family: var(--text); font-style: italic; font-weight: 350;
+  font-size: clamp(1.02rem, 1.4vw, 1.16rem); line-height: 1.55;
+}
+.echo figcaption { font-size: .8rem; font-weight: 600; letter-spacing: .04em; color: var(--muted); line-height: 1.45; }
+.echo cite { font-style: normal; color: var(--ink); }
+.none { margin: 0; font-family: var(--text); font-style: italic; color: var(--muted); font-size: 1rem; }
+
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+@media (max-width: 760px) {
+  .cols-head { display: none; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .gutter { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 12px; }
+  .row.no-echo .gutter { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .row, .span .arc { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="label" id="kicker"></p>
+    <h1 id="q"></h1>
+    <p class="lede" id="lede"></p>
+  </header>
+  <section class="span" aria-labelledby="span-label">
+    <p class="label" id="span-label">How far back each echo reaches</p>
+    <div class="span-scroll"><svg id="chart" viewBox="0 0 1000 236" role="img" aria-labelledby="span-label"></svg></div>
+  </section>
+  <section aria-label="Parallel text">
+    <div class="cols-head"><p class="label" id="head-letter"></p><p class="label">Written</p><p class="label">Echo in Bahá’í literature</p></div>
+    <div class="rows" id="rows"></div>
+  </section>
+  <footer><a class="label" href="index.html">All variants</a><p class="label" id="foot"></p></footer>
+</div>
+<script src="content.js"></script>
+<script>
+(function () {
+  var U = window.UNITY, L = U.letter;
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function cite(e) {
+    return esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + " (" + e.year + ")";
+  }
+
+  document.getElementById("kicker").textContent = "A concordance · " + L.dateLabel;
+  document.getElementById("q").textContent = U.question;
+  document.getElementById("lede").innerHTML = "Passages from a letter of the " + esc(L.body) + ", dated " + esc(L.dateLabel) +
+    ", each set opposite an <em>echo</em> from earlier Bahá’í writings.";
+  document.getElementById("head-letter").textContent = "The letter, " + L.year;
+  document.getElementById("foot").textContent = U.entries.filter(function (e) { return e.echo; }).length + " echoes across " +
+    (L.year - Math.min.apply(null, U.entries.filter(function (e) { return e.echo; }).map(function (e) { return e.echo.year; }))) + " years";
+
+  // rows
+  var rows = document.getElementById("rows");
+  rows.innerHTML = U.entries.map(function (en) {
+    var right, mid;
+    if (en.echo) {
+      mid = "<b>" + en.echo.year + "</b><span>" + (L.year - en.echo.year) + " years earlier</span>";
+      right = '<figure class="echo"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote><figcaption>" + cite(en.echo) + "</figcaption></figure>";
+    } else {
+      mid = "";
+      right = '<p class="none">The opening passage stands without an echo.</p>';
+    }
+    return '<article class="row' + (en.echo ? "" : " no-echo") + '" id="' + en.id + '" data-id="' + en.id + '" tabindex="0">' +
+      '<p class="statement">' + esc(en.statement) + '</p><div class="gutter">' + mid + "</div>" + right + "</article>";
+  }).join("");
+
+  // span chart
+  var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("chart");
+  var x0 = 40, x1 = 960, base = 140, from = 1870, to = 2030;
+  function X(y) { return x0 + (y - from) / (to - from) * (x1 - x0); }
+  function el(n, a, p) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
+  for (var t = 1900; t <= 2000; t += 25) {
+    el("line", { x1: X(t), x2: X(t), y1: base, y2: base + 8, "class": "tick" });
+    el("text", { x: X(t), y: base + 26, "text-anchor": "middle", "class": "tick-label" }).textContent = t;
+  }
+  el("line", { x1: x0, x2: x1, y1: base, y2: base, "class": "axis" });
+  var echoes = U.entries.filter(function (e) { return e.echo; }).slice().sort(function (p, q) { return p.echo.year - q.echo.year; });
+  var levels = [56, 82];
+  function label(g, x, year, text, k, right) {
+    var y = base + levels[k % 2];
+    el("line", { x1: x, x2: x, y1: base + 8, y2: y - 16, "class": "tick" }, g);
+    var t = el("text", { x: right ? x + 4 : x - 4, y: y, "text-anchor": right ? "end" : "start", "class": "who" }, g);
+    var b = document.createElementNS(NS, "tspan"); b.setAttribute("class", "yr"); b.textContent = year + " ";
+    t.appendChild(b); t.appendChild(document.createTextNode(text));
+  }
+  var cut = X(1990), lefts = echoes.filter(function (e) { return X(e.echo.year) <= cut; }).length;
+  echoes.forEach(function (en, i) {
+    var right = X(en.echo.year) > cut;
+    var k = right ? i - lefts : lefts - 1 - i;
+    var g = el("g", { "data-id": en.id, tabindex: "0" });
+    var a = X(en.echo.year), b = X(L.year), d = L.year - en.echo.year;
+    var peak = 16 + d / (to - from) * 104;
+    el("path", { d: "M" + b + " " + base + " Q " + (a + b) / 2 + " " + (base - 2 * peak) + " " + a + " " + base, "class": "arc" }, g);
+    el("circle", { cx: a, cy: base, r: 6, "class": "node" }, g);
+    label(g, a, en.echo.year, en.echo.work, k, right);
+    g.addEventListener("mouseenter", function () { mark(en.id); });
+    g.addEventListener("mouseleave", function () { mark(null); });
+    g.addEventListener("click", function () { document.getElementById(en.id).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); });
+  });
+  el("circle", { cx: X(L.year), cy: base, r: 7, "class": "node letter" });
+  label(svg, X(L.year), L.year, "the letter", echoes.length - lefts, true);
+
+  function mark(id) {
+    document.querySelectorAll("[data-id]").forEach(function (n) { n.classList.toggle("on", n.getAttribute("data-id") === id); });
+  }
+  document.querySelectorAll(".row").forEach(function (r) {
+    var id = r.getAttribute("data-id");
+    r.addEventListener("mouseenter", function () { mark(id); });
+    r.addEventListener("focus", function () { mark(id); });
+    r.addEventListener("mouseleave", function () { mark(null); });
+    r.addEventListener("blur", function () { mark(null); });
+  });
+})();
+</script>
+</body>
+</html>
