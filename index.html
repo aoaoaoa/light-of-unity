@@ -3,38 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
 <title>How powerful is the light of unity?</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Instrument+Sans:wght@400;600&display=swap">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
 <style>
-:root{--paper:#f6f7f4;--ink:#161b17;--mute:#66706a;--rule:#d8ddd8;--tint:#1b6b4e}
-@media (prefers-color-scheme:dark){:root{--paper:#101412;--ink:#ecefe9;--mute:#98a39c;--rule:#2b332e;--tint:#8fcdb0;color-scheme:dark}}
+/* Layout: full-bleed color bands, one per theme of the letter; inside each, the letter speaks in a condensed grotesque and the literature answers in an italic serif, set as a two-column spread that stacks on phones. */
+:root{
+  --paper:#f4f6f3; --ink:#15201a; --mute:#5c6a62; --rule:#c9d2cc;
+  --band-bg:var(--l); --band-fg:#15201a; --band-mute:rgba(21,32,26,.62); --band-rule:rgba(21,32,26,.22);
+  --display:"Archivo",Impact,"Arial Narrow",sans-serif; --serif:"Newsreader",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0e1411;--ink:#eef1ec;--mute:#9aa79f;--rule:#2a3630;--band-bg:var(--d);--band-fg:#f3f1ea;--band-mute:rgba(243,241,234,.62);--band-rule:rgba(243,241,234,.22);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0e1411;--ink:#eef1ec;--mute:#9aa79f;--rule:#2a3630;--band-bg:var(--d);--band-fg:#f3f1ea;--band-mute:rgba(243,241,234,.62);--band-rule:rgba(243,241,234,.22);color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Fraunces",Georgia,serif;font-size:19px;line-height:1.5}
-main{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:clamp(48px,10vw,120px)}
-p.eyebrow{font-family:"Instrument Sans",Arial,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);line-height:1.7;margin:0 0 32px}
-h1{font-weight:300;font-size:clamp(44px,8vw,84px);line-height:1;letter-spacing:-.025em;margin:0 0 48px;text-wrap:balance;font-variation-settings:"opsz" 144}
-h1 em{font-style:italic;font-weight:400}
-ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
-li{border-bottom:1px solid var(--rule)}
-li a{display:block;padding:22px 0;color:inherit;text-decoration:none}
-li a:hover h2,li a:focus-visible h2{color:var(--tint)}
-li a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
-.v{font-family:"Instrument Sans",Arial,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:.5em}
-h2{margin:0 0 6px;font-weight:400;font-size:28px;line-height:1.1}
-li p{margin:0;font-family:"Instrument Sans",Arial,sans-serif;font-size:14px;color:var(--mute);max-width:46ch}
-footer{margin-top:48px;font-family:"Instrument Sans",Arial,sans-serif;font-size:14px;color:var(--mute)}
-footer a{color:var(--ink)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.45}
+.inner{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+.label{font-family:var(--display);font-stretch:85%;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+/* cover */
+.cover{padding-block:clamp(48px,9vw,120px) clamp(40px,6vw,80px);border-bottom:1px solid var(--rule)}
+.cover h1{font-family:var(--display);font-stretch:70%;font-weight:900;font-size:clamp(64px,13vw,180px);line-height:.86;letter-spacing:-.02em;margin:0 0 .35em;text-transform:uppercase;text-wrap:balance;max-width:9ch}
+.cover .meta{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:860px;align-items:start}
+.cover .meta p{margin:0;font-size:17px;line-height:1.5;color:var(--mute)}
+.cover .meta p b{color:var(--ink);font-weight:500}
+.key{display:flex;gap:6px;margin-top:28px;flex-wrap:wrap}
+.key a{display:block;height:10px;flex:1 1 60px;min-width:40px;background:var(--sw);border-radius:2px;text-decoration:none}
+/* bands */
+.band{background:var(--band-bg);color:var(--band-fg);padding-block:clamp(40px,6vw,88px)}
+.sec{display:flex;justify-content:space-between;border-bottom:1px solid var(--band-rule);padding-bottom:12px;margin-bottom:clamp(28px,4vw,56px);color:var(--band-mute)}
+.pair{display:grid;grid-template-columns:3.2rem minmax(0,1.1fr) minmax(0,.9fr);gap:0 clamp(24px,4vw,64px);padding-block:clamp(28px,4vw,56px);border-top:1px solid var(--band-rule)}
+.pair:first-of-type{border-top:0;padding-top:0}
+.num{font-family:var(--display);font-stretch:75%;font-weight:700;font-size:15px;color:var(--band-mute);padding-top:.6em;font-variant-numeric:tabular-nums}
+.letter{margin:0;font-family:var(--display);font-stretch:78%;font-weight:700;font-size:clamp(26px,3.3vw,44px);line-height:1.04;letter-spacing:-.012em;text-wrap:pretty;min-width:0}
+.echo{min-width:0;border-left:1px solid var(--band-rule);padding-left:clamp(16px,2vw,28px)}
+.echo p{margin:0;font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.42;font-weight:300;font-variation-settings:"opsz" 20}
+.echo cite{display:block;margin-top:14px;font-style:normal;font-family:var(--display);font-stretch:85%;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--band-mute)}
+.pair:not(:has(.echo)) .letter{grid-column:2/4;max-width:24ch}
+.close{padding-block:clamp(48px,8vw,100px);text-align:left}
+.close p{max-width:38ch;font-size:20px;margin:0 0 20px}
+.close a{font-family:var(--display);font-stretch:80%;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:.2em}
+a:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (max-width:760px){
+  .pair{grid-template-columns:2.2rem minmax(0,1fr)}
+  .echo{grid-column:2;margin-top:22px;border-left:0;padding-left:0;border-top:1px solid var(--band-rule);padding-top:18px}
+  .pair:not(:has(.echo)) .letter{grid-column:2}
+  .cover .meta{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <main>
-<p class="eyebrow">National Spiritual Assembly of the Bahá'ís of the United States<br>June 19, 2020</p>
-<h1>How powerful is the <em>light of unity?</em></h1>
-<ol>
-<li><a href="v1/"><div><h2>Version one</h2><p>The letter and its echoes as a two-column spread, in eight color bands.</p></div></a></li>
-<li><a href="v2/"><div><h2>Version two</h2><p>The passages read in one measure, with echoes as numbered margin glosses and the sources at the foot.</p></div></a></li>
-</ol>
-<footer>The original letter: <a href="https://link.bahai.us/juneteenth">link.bahai.us/juneteenth</a></footer>
+<header class="cover inner">
+  <span class="label" style="color:var(--mute)">Bahá'ís of the United States · Juneteenth 2020</span>
+  <h1>How powerful is the light of unity?</h1>
+  <div class="meta">
+    <p><b>Twenty-three sentences</b> from a letter of the National Spiritual Assembly of the Bahá'ís of the United States, dated June 19, 2020, read in sequence.</p>
+    <p>Beside each, an echo from Bahá'í literature.</p>
+  </div>
+  <nav class="key" aria-label="Sections"><a href="#p1" title="Recognition" style="--sw:var(--sw0)"></a><a href="#p4" title="Framework" style="--sw:var(--sw1)"></a><a href="#p7" title="Discourse" style="--sw:var(--sw2)"></a><a href="#p10" title="Models" style="--sw:var(--sw3)"></a><a href="#p13" title="Resources" style="--sw:var(--sw4)"></a><a href="#p15" title="Oneness" style="--sw:var(--sw5)"></a><a href="#p18" title="Peace" style="--sw:var(--sw6)"></a><a href="#p21" title="Coming of age" style="--sw:var(--sw7)"></a></nav>
+</header>
+<section class="band" style="--d:#1f3a0f;--l:#8fb996">
+  <div class="inner">
+    <header class="sec"><span class="label">Recognition</span><span class="label">1 / 8</span></header>
+    <article class="pair" id="p1">
+  <div class="num">01</div>
+  <p class="letter">To create a just society begins with recognition of the fundamental truth that humanity is one. But it is not enough simply to believe this in our hearts.</p>
+  
+</article><article class="pair" id="p2">
+  <div class="num">02</div>
+  <p class="letter">It creates the moral imperative to act, and to view all aspects of our personal, social, and institutional lives through the lens of justice.</p>
+  <div class="echo"><p>Be anxiously concerned with the needs of the age ye live in, and centre your deliberations on its exigencies and requirements. We can well perceive how the whole human race is encompassed with great, with incalculable afflictions. We see it languishing on its bed of sickness, sore-tried and disillusioned.</p><cite>Bahá&#x27;u&#x27;lláh, The Tabernacle of Unity · 1882</cite></div>
+</article><article class="pair" id="p3">
+  <div class="num">03</div>
+  <p class="letter">It implies a reordering of our society more profound than anything we have yet achieved. And it requires the participation of Americans of every race and background, for it is only through such inclusive participation that new moral and social directions can emerge.</p>
+  <div class="echo"><p>…find those souls longing to shed the lethargy imposed on them by society and work alongside one another in their neighbourhoods and villages to begin a process of collective transformation. If the friends persist in their efforts to learn the ways and methods of community building in small settings in this way, the long-cherished goal of universal participation in the affairs of the Faith will, we are certain, move by several orders of magnitude within grasp.</p><cite>The Universal House of Justice, Riḍván message · 2010</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#1b6b4e;--l:#8fcdb0">
+  <div class="inner">
+    <header class="sec"><span class="label">Framework</span><span class="label">2 / 8</span></header>
+    <article class="pair" id="p4">
+  <div class="num">04</div>
+  <p class="letter">It is one thing to protest against particular forms of injustice. It is a far more profound challenge to create a new framework for justice.</p>
+  <div class="echo"><p>The light of men is Justice. Quench it not with the contrary winds of oppression and tyranny. The purpose of justice is the appearance of unity among men. The ocean of divine wisdom surgeth within this exalted word, while the books of the world cannot contain its inner significance.</p><cite>Bahá&#x27;u&#x27;lláh, Words of Paradise, in Tablets of Bahá&#x27;u&#x27;lláh · c. 1889</cite></div>
+</article><article class="pair" id="p5">
+  <div class="num">05</div>
+  <p class="letter">Our efforts can only succeed when we learn to build relationships with each other based on sincere friendship, regard, and trust, which, in turn, become pillars for the activities of our institutions and communities.</p>
+  <div class="echo"><p>One must see in every human being only that which is worthy of praise. When this is done, one can be a friend to the whole human race. If, however, we look at people from the standpoint of their faults, then being a friend to them is a formidable task.</p><cite>Selections from the Writings of &#x27;Abdu&#x27;l-Bahá</cite></div>
+</article><article class="pair" id="p6">
+  <div class="num">06</div>
+  <p class="letter">It is essential for us to join hands in a process of learning how to create models of what we want to see in every dimension of American life, as we learn to apply the principle of oneness through practical engagement and experience.</p>
+  <div class="echo"><p>…whatever the level of activity in a cluster, it is the capacity for learning among the local friends, within a common framework, that fosters progress along the path of development. Everyone has a share in this enterprise; the contribution of each serves to enrich the whole.</p><cite>The Universal House of Justice, Riḍván message · 2014</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#4b3a63;--l:#b9a6d4">
+  <div class="inner">
+    <header class="sec"><span class="label">Discourse</span><span class="label">3 / 8</span></header>
+    <article class="pair" id="p7">
+  <div class="num">07</div>
+  <p class="letter">An essential element of the process will be honest and truthful discourse about current conditions and their causes, and understanding, in particular, the deeply entrenched notions of anti-Blackness that pervade our society.</p>
+  <div class="echo"><p>&#x27;Abdu&#x27;l-Bahá did not hesitate to introduce into His relations with Western believers actions that summoned them to a level of consciousness far above mere social liberalism and tolerance.</p><cite>The Universal House of Justice, Century of Light · 2001</cite></div>
+</article><article class="pair" id="p8">
+  <div class="num">08</div>
+  <p class="letter">We must build the capacity to truly hear and acknowledge the voices of those who have directly suffered from the effects of racism.</p>
+  <div class="echo"><p>Racial discrimination is baneful because it violates the dignity of human beings. And yet it persists. Racism is poisonous because it cripples its victims, corrupts its perpetrators, and blights human progress. And yet it persists. Why? We believe that racism persists precisely because it is deeply rooted in outdated attitudes and erroneous beliefs.</p><cite>Bahá&#x27;í International Community, Eliminating Racism · 1989</cite></div>
+</article><article class="pair" id="p9">
+  <div class="num">09</div>
+  <p class="letter">This capacity should manifest itself in our schools, the media, and other civic arenas, as well as in our work and personal relations. This should not end with words, but lead to meaningful, constructive action.</p>
+  <div class="echo"><p>As to racial prejudice, the corrosion of which, for well-nigh a century, has bitten into the fiber, and attacked the whole social structure of American society, it should be regarded as constituting the most vital and challenging issue confronting the Bahá&#x27;í community at the present stage of its evolution. The ceaseless exertions which this issue of paramount importance calls for, the sacrifices it must impose, the care and vigilance it demands, the moral courage and fortitude it requires, the tact and sympathy it necessitates, invest this problem, which the American believers are still far from having satisfactorily resolved, with an urgency and importance that cannot be overestimated.</p><cite>Shoghi Effendi, The Advent of Divine Justice · 1938</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#2f5560;--l:#9ec3cc">
+  <div class="inner">
+    <header class="sec"><span class="label">Models</span><span class="label">4 / 8</span></header>
+    <article class="pair" id="p10">
+  <div class="num">10</div>
+  <p class="letter">There are already significant efforts underway to learn how to create models of unity in neighborhoods and communities throughout the nation. Bahá&#x27;ís have been persistently engaged in such efforts for many years.</p>
+  <div class="echo"><p>Such an approach offers a striking contrast to the spiritually bankrupt and moribund ways of an old social order that so often seeks to harness human energy through domination, through greed, through guilt or through manipulation.</p><cite>The Universal House of Justice, Riḍván message · 2010</cite></div>
+</article><article class="pair" id="p11">
+  <div class="num">11</div>
+  <p class="letter">The aim is not unity in sameness; it is unity in diversity. It is the recognition that everyone in this land has a part to play in contributing to the betterment of society, and that true prosperity, material and spiritual, will be available to us all to the degree that we live up to this standard.</p>
+  <div class="echo"><p>Oneness, of course, should not be confused with sameness, which is a tedious, artificial thing, entirely alien to a world where no two grains of wheat have ever been alike. The peculiar curse of the times is an effort at standardization; gum is chewed on the Himalayas, and everyone is trying desperately to be like everyone else…</p><cite>Marzieh Gail, Dawn Over Mount Hira · 1976</cite></div>
+</article><article class="pair" id="p12">
+  <div class="num">12</div>
+  <p class="letter">We should earnestly discover what is being done, what truly helps to make a difference, and why. We should share this knowledge throughout the country as a means of inspiring and assisting the work of others. If we do this, we could soon find ourselves in the midst of a mass transition toward racial justice.</p>
+  <div class="echo"><p>The essence of all that We have revealed for thee is Justice, is for man to free himself from idle fancy and imitation, discern with the eye of oneness His glorious handiwork, and look into all things with a searching eye.</p><cite>Bahá&#x27;u&#x27;lláh, Words of Wisdom, in Tablets of Bahá&#x27;u&#x27;lláh · c. 1870s</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#143a6e;--l:#9fb9e0">
+  <div class="inner">
+    <header class="sec"><span class="label">Resources</span><span class="label">5 / 8</span></header>
+    <article class="pair" id="p13">
+  <div class="num">13</div>
+  <p class="letter">To understand and firmly believe that we are all children of God provides us with access to vast spiritual resources, motivating us to see beyond ourselves and to work steadily and sacrificially in the face of all obstacles.</p>
+  <div class="echo"><p>One can hardly imagine what a great influence genuine love, truthfulness and purity of motives exert on the souls of men. But these traits cannot be acquired by any believer unless he makes a daily effort to gain them…</p><cite>Shoghi Effendi, in The Compilation of Compilations, vol. 2</cite></div>
+</article><article class="pair" id="p14">
+  <div class="num">14</div>
+  <p class="letter">It helps to ensure that the process is consistent with the goal to create communities characterized by justice. It gives us the faith, strength, and creativity to transform our own hearts, as we also work for the transformation of society.</p>
+  <div class="echo"><p>Bahá&#x27;ís are committed to a twofold process of social change that includes the transformation of hearts and minds as well as the transformation of social norms and structures. They seek coherence between the means and ends of social change. They adopt a long-term perspective on change which calls for perseverance in a multi-generational struggle. They have faith in humanity&#x27;s long-term capacity for justice.</p><cite>Michael Karlberg, The Constructive Imaginary, Journal of Bahá&#x27;í Studies · 2020</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#0f3a3f;--l:#8fc4c6">
+  <div class="inner">
+    <header class="sec"><span class="label">Oneness</span><span class="label">6 / 8</span></header>
+    <article class="pair" id="p15">
+  <div class="num">15</div>
+  <p class="letter">We believe that the tribulations now encompassing much of the world are the symptoms of humanity&#x27;s failure to understand and embrace our essential oneness.</p>
+  <div class="echo"><p>The Great Peace towards which people of good will throughout the centuries have inclined their hearts, of which seers and poets for countless generations have expressed their vision, and for which from age to age the sacred scriptures of mankind have constantly held the promise, is now at long last within the reach of the nations. For the first time in history it is possible for everyone to view the entire planet, with all its myriad diversified peoples, in one perspective.</p><cite>The Universal House of Justice, The Promise of World Peace · 1985</cite></div>
+</article><article class="pair" id="p16">
+  <div class="num">16</div>
+  <p class="letter">The interrelated threats of climate change, gender discrimination, extreme wealth and poverty, unfair distribution of resources, and the like, all stem from this deficiency and can never be resolved if we do not awaken to our dependence upon each other.</p>
+  <div class="echo"><p>The well-being of mankind, its peace and security, are unattainable unless and until its unity is firmly established.</p><cite>Bahá&#x27;u&#x27;lláh, Gleanings from the Writings of Bahá&#x27;u&#x27;lláh</cite></div>
+</article><article class="pair" id="p17">
+  <div class="num">17</div>
+  <p class="letter">The world has contracted to a neighborhood, and it is important to appreciate that what we do in America impacts not only our own country, but the entire planet.</p>
+  <div class="echo"><p>May the American people and their government unite in their efforts in order that this light may dawn from this point and spread to all regions, for this is one of the greatest bestowals of God. In order that America may avail herself of this opportunity, I beg that you strive and pray with heart and soul, devoting all your energies to this end: that the banner of international peace may be upraised here and that this democracy may be the cause of the cessation of warfare in all other countries.</p><cite>&#x27;Abdu&#x27;l-Bahá, The Promulgation of Universal Peace · 1912</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#1d4f78;--l:#9cc1e4">
+  <div class="inner">
+    <header class="sec"><span class="label">Peace</span><span class="label">7 / 8</span></header>
+    <article class="pair" id="p18">
+  <div class="num">18</div>
+  <p class="letter">It is not an exaggeration to say that the cause of world peace is linked to our success in resolving the issue of racial injustice.</p>
+  <div class="echo"><p>Until the reality of equality between man and woman is fully established and attained, the highest social development of mankind is not possible.</p><cite>&#x27;Abdu&#x27;l-Bahá, The Promulgation of Universal Peace · 1912</cite></div>
+</article><article class="pair" id="p19">
+  <div class="num">19</div>
+  <p class="letter">The oneness of humanity is the foundation of our future. Its realization is the inevitable next stage in our life on this planet.</p>
+  <div class="echo"><p>The long ages of infancy and childhood, through which the human race had to pass, have receded into the background. Humanity is now experiencing the commotions invariably associated with the most turbulent stage of its evolution, the stage of adolescence, when the impetuosity of youth and its vehemence reach their climax, and must gradually be superseded by the calmness, the wisdom, and the maturity that characterize the stage of manhood.</p><cite>Shoghi Effendi, The World Order of Bahá&#x27;u&#x27;lláh · 1936</cite></div>
+</article><article class="pair" id="p20">
+  <div class="num">20</div>
+  <p class="letter">We will replace a world society based upon competition and conflict, and driven by rampant materialism, with one founded upon our higher potential for collaboration and reciprocity.</p>
+  <div class="echo"><p>Regarding reciprocity and cooperation, each member of the body politic should live in the utmost comfort and welfare because each individual member of humanity is a member of the body politic, and if one member is in distress or is afflicted with some disease, all the other members must necessarily suffer.</p><cite>&#x27;Abdu&#x27;l-Bahá, The Promulgation of Universal Peace · 1912</cite></div>
+</article>
+  </div>
+</section><section class="band" style="--d:#5c1f22;--l:#d9a3a3">
+  <div class="inner">
+    <header class="sec"><span class="label">Coming of age</span><span class="label">8 / 8</span></header>
+    <article class="pair" id="p21">
+  <div class="num">21</div>
+  <p class="letter">This achievement will mark the universal coming of age of the human race. How soon we achieve this, and how easily, will depend upon the commitment we demonstrate to this cardinal principle.</p>
+  <div class="echo"><p>Acceptance of the oneness of mankind is the first fundamental prerequisite for reorganization and administration of the world as one country, the home of humankind. Universal acceptance of this spiritual principle is essential to any successful attempt to establish world peace. It should therefore be universally proclaimed, taught in schools, and constantly asserted in every nation as preparation for the organic change in the structure of society which it implies.</p><cite>The Universal House of Justice, The Promise of World Peace · 1985</cite></div>
+</article><article class="pair" id="p22">
+  <div class="num">22</div>
+  <p class="letter">Bahá&#x27;u&#x27;lláh said: “So powerful is the light of unity that it can illuminate the whole earth.” May that light grow brighter with every passing day.</p>
+  
+</article>
+  </div>
+</section>
+<footer class="close inner">
+  <p>The original letter used to compile this presentation can be read in full.</p>
+  <a href="https://link.bahai.us/juneteenth">link.bahai.us/juneteenth</a>
+</footer>
 </main>
+<style>:root{--sw0:#1f3a0f;--sw1:#1b6b4e;--sw2:#4b3a63;--sw3:#2f5560;--sw4:#143a6e;--sw5:#0f3a3f;--sw6:#1d4f78;--sw7:#5c1f22}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sw0:#8fb996;--sw1:#8fcdb0;--sw2:#b9a6d4;--sw3:#9ec3cc;--sw4:#9fb9e0;--sw5:#8fc4c6;--sw6:#9cc1e4;--sw7:#d9a3a3}}
+:root[data-theme="dark"]{--sw0:#8fb996;--sw1:#8fcdb0;--sw2:#b9a6d4;--sw3:#9ec3cc;--sw4:#9fb9e0;--sw5:#8fc4c6;--sw6:#9cc1e4;--sw7:#d9a3a3}</style>
+
 </body>
 </html>

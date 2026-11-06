@@ -27,7 +27,7 @@ def build_a():
     {"".join(rows)}
   </div>
 </section>''')
-    return f'''<title>Two Voices</title>
+    return f'''<title>How powerful is the light of unity?</title>
 {SIDES}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
 <style>
@@ -308,9 +308,7 @@ footer a{color:var(--ink)}
 for name, fn in [("two-voices", build_a), ("letter-glossed", build_b)]:
     with open(os.path.join(OUT, f"{name}.html"), "w") as f: f.write(fn())
 SITE = os.path.join(os.path.dirname(OUT), "site")
-for d, fn in [("v1", build_a), ("v2", build_b)]:
-    os.makedirs(os.path.join(SITE, d), exist_ok=True)
-    with open(os.path.join(SITE, d, "index.html"), "w") as f: f.write(standalone(fn()))
-with open(os.path.join(SITE, "index.html"), "w") as f: f.write(LANDING)
+os.makedirs(SITE, exist_ok=True)
+with open(os.path.join(SITE, "index.html"), "w") as f: f.write(standalone(build_a()))
 open(os.path.join(SITE, ".nojekyll"), "w").close()
 print("ok")
