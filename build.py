@@ -103,9 +103,7 @@ def build_b():
         if it["echo"]:
             k = len(refs) + 1
             refs.append(it)
-            note = f'''<sup class="mark" aria-hidden="true">{k}</sup>
-<aside class="gloss" id="g{k}" style="--c:{it["dark"]};--cl:{it["light"]}">
-  <span class="gk">{k}</span>
+            note = f'''<aside class="gloss" id="g{k}" style="--c:{it["dark"]};--cl:{it["light"]}">
   <p>{esc(it["echo"])}</p>
   <cite>{esc(it["source"])}{(", " + it["year"]) if it["year"] else ""}</cite>
 </aside>'''
@@ -132,17 +130,17 @@ body{{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);
 h1{{font-weight:300;font-size:clamp(50px,8.4vw,108px);line-height:1;grid-column:1;letter-spacing:-.025em;margin:0;text-wrap:balance;font-variation-settings:"opsz" 144}}
 h1 em{{font-style:italic;font-weight:400}}
 .head .desc{{grid-column:2;font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--mute);margin:0;max-width:34ch}}
-.row{{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:0 clamp(28px,5vw,80px);position:relative}}
+.row{{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:0 clamp(48px,8vw,128px);position:relative}}
 .row+.row{{margin-top:clamp(20px,2.6vw,34px)}}
 .line{{margin:0;font-size:clamp(20px,1.9vw,26px);line-height:1.42;font-weight:300;font-variation-settings:"opsz" 30;text-wrap:pretty;position:relative}}
 .line::before{{content:"";position:absolute;left:-14px;top:.5em;bottom:.3em;width:3px;background:var(--tint);border-radius:2px}}
 .mark{{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--tint);margin-left:.25em;vertical-align:top}}
-.gloss{{grid-column:2;font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--mute);align-self:start;padding-top:.45em;display:grid;grid-template-columns:1.4em 1fr;gap:4px 8px;min-width:0}}
+.gloss{{grid-column:2;font-family:var(--sans);font-size:13.5px;line-height:1.5;color:var(--mute);align-self:start;padding-top:.45em;display:grid;gap:6px;min-width:0}}
 .gloss .gk{{font-weight:600;color:var(--tint);font-size:11px;padding-top:.25em}}
 .gloss p{{margin:0;font-style:italic}}
-.gloss cite{{grid-column:2;font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:2px}}
+.gloss cite{{font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:2px}}
 .gloss cite::before{{content:"";display:inline-block;width:10px;height:2px;background:var(--tint);vertical-align:middle;margin-right:8px}}
-.coda{{border-top:1px solid var(--rule);margin-top:clamp(40px,6vw,80px);padding-top:32px;display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:32px clamp(28px,5vw,80px)}}
+.coda{{border-top:1px solid var(--rule);margin-top:clamp(40px,6vw,80px);padding-top:32px;display:grid;grid-template-columns:minmax(0,62ch);gap:32px clamp(28px,5vw,80px)}}
 .coda h2{{font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 14px;font-weight:600}}
 .coda ol{{list-style:none;margin:0;padding:0;font-family:var(--sans);font-size:13.5px;line-height:1.5;display:grid;gap:6px}}
 .coda li{{display:grid;grid-template-columns:1.6em 1fr;gap:8px}}
@@ -160,7 +158,7 @@ a:focus-visible{{outline:2px solid var(--ink);outline-offset:3px}}
 <header class="head">
   <p class="eyebrow">National Spiritual Assembly of the Bahá'ís of the United States<br>June 19, 2020</p>
   <h1>How powerful is the <em>light of unity?</em></h1>
-  <p class="desc">Passages from the letter, with echoes from Bahá'í literature set in the margin. Numbers lead to the sources below.</p>
+  <p class="desc">Passages from the letter, with echoes from Bahá'í literature set in the margin.</p>
 </header>
 {"".join(paras)}
 <footer class="coda">
@@ -168,7 +166,6 @@ a:focus-visible{{outline:2px solid var(--ink);outline-offset:3px}}
     <p class="note">{esc(CLOSE_TEXT.replace(" at link.bahai.us/juneteenth","."))}</p>
     <a href="{CLOSE_URL}">link.bahai.us/juneteenth</a>
   </div>
-  <div><h2>Echoes</h2><ol>{biblio}</ol></div>
 </footer>
 </main>
 '''
