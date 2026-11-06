@@ -7,4 +7,4 @@ Two one-page sites built from the Bahá'ís of the United States carousel of the
 - `index.html` landing page linking both.
 - `data.py` the transcribed passages, echoes and sources; `build.py` regenerates all pages (`python3 build.py`, then copy `site/` to the repo root).
 
-Published with GitHub Pages from `main` via `.github/workflows/pages.yml`. Original letter: https://link.bahai.us/juneteenth
+Published with GitHub Pages from `main` via `.github/workflows/jekyll-gh-pages.yml`. Original letter: https://link.bahai.us/juneteenth
