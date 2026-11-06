@@ -284,7 +284,7 @@ h1{font-weight:300;font-size:clamp(44px,8vw,84px);line-height:1;letter-spacing:-
 h1 em{font-style:italic;font-weight:400}
 ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
 li{border-bottom:1px solid var(--rule)}
-li a{display:grid;grid-template-columns:5em 1fr;gap:16px;padding:22px 0;color:inherit;text-decoration:none}
+li a{display:block;padding:22px 0;color:inherit;text-decoration:none}
 li a:hover h2,li a:focus-visible h2{color:var(--tint)}
 li a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .v{font-family:"Instrument Sans",Arial,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:.5em}
@@ -292,7 +292,6 @@ h2{margin:0 0 6px;font-weight:400;font-size:28px;line-height:1.1}
 li p{margin:0;font-family:"Instrument Sans",Arial,sans-serif;font-size:14px;color:var(--mute);max-width:46ch}
 footer{margin-top:48px;font-family:"Instrument Sans",Arial,sans-serif;font-size:14px;color:var(--mute)}
 footer a{color:var(--ink)}
-@media (max-width:480px){li a{grid-template-columns:1fr;gap:6px}}
 </style>
 </head>
 <body>
@@ -300,8 +299,8 @@ footer a{color:var(--ink)}
 <p class="eyebrow">National Spiritual Assembly of the Bahá'ís of the United States<br>June 19, 2020</p>
 <h1>How powerful is the <em>light of unity?</em></h1>
 <ol>
-<li><a href="v1/"><span class="v">Version one</span><div><h2>Two Voices</h2><p>The letter and its echoes as a two-column spread, in eight color bands.</p></div></a></li>
-<li><a href="v2/"><span class="v">Version two</span><div><h2>The Letter, Glossed</h2><p>The passages read in one measure, with echoes as numbered margin glosses and the sources at the foot.</p></div></a></li>
+<li><a href="v1/"><div><h2>Version one</h2><p>The letter and its echoes as a two-column spread, in eight color bands.</p></div></a></li>
+<li><a href="v2/"><div><h2>Version two</h2><p>The passages read in one measure, with echoes as numbered margin glosses and the sources at the foot.</p></div></a></li>
 </ol>
 <footer>The original letter: <a href="https://link.bahai.us/juneteenth">link.bahai.us/juneteenth</a></footer>
 </main>
