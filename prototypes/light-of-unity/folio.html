@@ -20,6 +20,10 @@
   --teal-deep: #0f6045;
   --plum: #503a5f;
   --plum-deep: #412a4f;
+  --slate: #4b6a70;
+  --slate-deep: #3b585e;
+  --navy: #163f7a;
+  --navy-deep: #0c2d66;
   --paper: #f0ebe5;
   --paper-dim: rgba(240, 235, 229, .62);
   --paper-faint: rgba(240, 235, 229, .22);
@@ -55,6 +59,8 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
 .leaf[data-ground="sage"]   { background: radial-gradient(120% 90% at 85% 0%, #93b59a 0%, var(--sage) 45%, var(--sage-deep) 100%); }
 .leaf[data-ground="forest"] { background: radial-gradient(120% 90% at 85% 0%, #375617 0%, var(--forest) 45%, var(--forest-deep) 100%); }
 .leaf[data-ground="plum"]   { background: radial-gradient(120% 90% at 85% 0%, #5d4a6c 0%, var(--plum) 45%, var(--plum-deep) 100%); }
+.leaf[data-ground="slate"]  { background: radial-gradient(120% 90% at 85% 0%, #557479 0%, var(--slate) 45%, var(--slate-deep) 100%); }
+.leaf[data-ground="navy"]   { background: radial-gradient(120% 90% at 85% 0%, #1d4a88 0%, var(--navy) 45%, var(--navy-deep) 100%); }
 .leaf[data-ground="teal"]   { background: radial-gradient(120% 90% at 85% 0%, #237b58 0%, var(--teal) 45%, var(--teal-deep) 100%); }
 .inner { max-width: 1120px; margin: 0 auto; position: relative; }
 
@@ -192,7 +198,7 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
 .ledger { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--paper-faint); }
 .ledger li {
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-columns: 7rem minmax(0, 1fr);
   gap: 16px;
   padding-block: 18px;
   border-bottom: 1px solid var(--paper-faint);
@@ -220,12 +226,11 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
 (function () {
   var U = window.UNITY;
   var root = document.getElementById("folio");
-  var roman = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx"];
+  var F = U.fmt;
+  function roman(n) { var r = "", m = [[10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]]; m.forEach(function (p) { while (n >= p[0]) { r += p[1]; n -= p[0]; } }); return r; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function cite(e) {
-    var s = esc(e.author) + ", <cite>" + esc(e.work) + "</cite>";
-    if (e.in) s += ", in <cite>" + esc(e.in) + "</cite>";
-    return s + " (" + (e.year || "n.d.") + ")";
+    return F.source(e) + " (" + F.date(e) + ")";
   }
 
   var words = U.question.replace("?", "").toUpperCase().split(" ");
@@ -243,12 +248,12 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
     html += '<section class="leaf" id="' + en.id + '" data-ground="' + en.ground + '"><div class="inner">' +
       '<p class="mark" aria-hidden="true">“</p>' +
       '<article class="passage">' +
-      '<p class="kicker"><span>Passage ' + roman[i] + " of " + roman[U.entries.length - 1] + "</span><span>" + esc(U.letter.dateLabel) + "</span></p>" +
+      '<p class="kicker"><span>Passage ' + roman(i + 1) + " of " + roman(U.entries.length) + "</span><span>" + esc(U.letter.dateLabel) + "</span></p>" +
       '<blockquote class="statement"><p>' + esc(en.statement) + "</p></blockquote>";
     if (en.echo) {
-      var y = en.echo.year;
+      var c = en.echo, big = c.circa ? Math.floor(c.year / 10) * 10 + "s" : c.year || "n.d.";
       html += '<figure class="echo">' +
-        '<p class="year">' + (y || "n.d.") + '<span class="distance">' + (y ? (U.letter.year - y) + " years before the letter" : "No date on the card") + "</span></p>" +
+        '<p class="year">' + big + '<span class="distance">' + (F.gap(c) || "No date on the card") + "</span></p>" +
         '<div class="echo-body"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote>" +
         "<figcaption>" + cite(en.echo) + "</figcaption></div></figure>";
     }
@@ -260,7 +265,7 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
   html += '<section class="leaf colophon" data-ground="forest"><div class="inner">' +
     "<h2>Sources, in order of writing</h2><ol class=\"ledger\">" +
     dated.map(function (e) {
-      return "<li><b>" + (e.year || "n.d.") + "</b><span>" + esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + "</span></li>";
+      return "<li><b>" + F.short(e) + "</b><span>" + F.source(e) + "</span></li>";
     }).join("") +
     "<li><b>" + U.letter.year + "</b><span>" + esc(U.letter.body) + ", letter dated " + esc(U.letter.dateLabel) + "</span></li>" +
     '</ol><a class="back" href="index.html">All variants</a></div></section>';

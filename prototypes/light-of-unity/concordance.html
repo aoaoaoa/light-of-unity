@@ -110,6 +110,7 @@ h1 {
   letter-spacing: -.012em;
   text-wrap: pretty;
 }
+.gutter b { white-space: nowrap; }
 .gutter { display: grid; align-content: start; gap: 6px; font-variant-numeric: tabular-nums; }
 .gutter b { font-weight: 800; font-size: 2rem; line-height: .9; letter-spacing: -.03em; color: var(--accent); }
 .gutter span { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); line-height: 1.35; }
@@ -158,7 +159,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   var U = window.UNITY, L = U.letter;
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function cite(e) {
-    return esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + " (" + (e.year || "n.d.") + ")";
+    return U.fmt.source(e) + " (" + U.fmt.date(e) + ")";
   }
 
   document.getElementById("kicker").textContent = "A concordance · " + L.dateLabel;
@@ -177,7 +178,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   rows.innerHTML = U.entries.map(function (en) {
     var right, mid;
     if (en.echo) {
-      mid = en.echo.year ? "<b>" + en.echo.year + "</b><span>" + (L.year - en.echo.year) + " years earlier</span>"
+      mid = en.echo.year ? "<b>" + U.fmt.short(en.echo) + "</b><span>" + U.fmt.gap(en.echo, "earlier") + "</span>"
         : "<b>n.d.</b><span>No date on the card</span>";
       right = '<figure class="echo"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote><figcaption>" + cite(en.echo) + "</figcaption></figure>";
     } else {
@@ -190,7 +191,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 
   // span chart
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("chart");
-  var x0 = 40, x1 = 960, base = 150, from = 1870, to = 2030, step = 26;
+  var x0 = 30, x1 = 900, base = 150, from = 1870, to = 2030, step = 26;
   function X(y) { return x0 + (y - from) / (to - from) * (x1 - x0); }
   function el(n, a, p) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
   for (var t = 1900; t <= 2000; t += 25) {
@@ -209,42 +210,45 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     g.addEventListener("mouseenter", function () { mark(en.id); });
     g.addEventListener("mouseleave", function () { mark(null); });
     g.addEventListener("click", function () { document.getElementById(en.id).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); });
-    return { g: g, x: a, year: en.echo.year, text: en.echo.work };
+    return { g: g, x: a, year: U.fmt.short(en.echo), text: en.echo.work };
   });
   el("circle", { cx: X(L.year), cy: base, r: 7, "class": "node letter" });
-  marks.push({ g: svg, x: X(L.year), year: L.year, text: "the letter" });
+  var lt = el("text", { x: X(L.year) + 14, y: base + 6, "class": "who" });
+  var lb = document.createElementNS(NS, "tspan"); lb.setAttribute("class", "yr"); lb.textContent = L.year + " ";
+  lt.appendChild(lb); lt.appendChild(document.createTextNode("letter"));
 
-  // Labels hang below the axis on leader lines. Each takes the shallowest row where it
-  // overlaps no other label and no leader passes through it. Labels point toward the
-  // centre, so placing the innermost first lets outer ones step down beneath them.
-  var mid = (x0 + x1) / 2, placed = [];
+  // Labels hang below the axis on leader lines. Labels left of the widest gap between
+  // nodes read rightward, the rest leftward. A label must sit below every label whose
+  // node lies under its text (so no leader crosses it), and clear of its row neighbours.
+  var xs = marks.map(function (m) { return m.x; }).sort(function (p, q) { return p - q; }), split = (x0 + x1) / 2, widest = 0;
+  for (var i = 1; i < xs.length; i++) if (xs[i] - xs[i - 1] > widest) { widest = xs[i] - xs[i - 1]; split = (xs[i] + xs[i - 1]) / 2; }
   marks.forEach(function (m) {
-    m.right = m.x > mid;
+    m.right = m.x > split;
     m.t = el("text", { "class": "who", "text-anchor": m.right ? "end" : "start" }, m.g);
     var b = document.createElementNS(NS, "tspan"); b.setAttribute("class", "yr"); b.textContent = m.year + " ";
     m.t.appendChild(b); m.t.appendChild(document.createTextNode(m.text));
     m.line = el("line", { "class": "tick" }, m.g);
   });
   function layout() {
-    placed = [];
-    var order = marks.slice().sort(function (p, q) { return Math.abs(p.x - mid) - Math.abs(q.x - mid); });
-    order.forEach(function (m) {
+    marks.forEach(function (m) {
       var w = m.t.getComputedTextLength() || m.text.length * 8 + 50;
-      var lo = m.right ? m.x + 4 - w : m.x - 4, hi = lo + w;
-      for (var k = 0; ; k++) {
-        var ok = placed.every(function (o) {
-          if (o.k === k && lo < o.hi + 14 && hi > o.lo - 14) return false;
-          if (o.k < k && m.x > o.lo - 6 && m.x < o.hi + 6) return false;
-          if (o.k > k && o.x > lo - 6 && o.x < hi + 6) return false;
-          return true;
-        });
-        if (ok || k > 12) { placed.push({ k: k, lo: lo, hi: hi, x: m.x }); m.k = k; break; }
-      }
-      var y = base + 54 + m.k * step;
+      m.lo = m.right ? m.x + 4 - w : m.x - 4; m.hi = m.lo + w; m.k = null;
+    });
+    function under(m, o) { return Math.abs(o.x - m.x) >= 8 && o.x > m.lo - 6 && o.x < m.hi + 6; }
+    var left = marks.slice(), placed = [];
+    while (left.length) {
+      var ready = left.filter(function (m) { return left.every(function (o) { return o === m || !under(m, o); }); });
+      var m = ready.length ? ready[0] : left[0];  // a cycle cannot happen across the split; take any if it does
+      left.splice(left.indexOf(m), 1);
+      var k = 0;
+      placed.forEach(function (o) { if (under(m, o)) k = Math.max(k, o.k + 1); });
+      while (placed.some(function (o) { return o.k === k && m.lo < o.hi + 14 && m.hi > o.lo - 14; })) k++;
+      m.k = k; placed.push(m);
+      var y = base + 54 + k * step;
       m.t.setAttribute("x", m.right ? m.x + 4 : m.x - 4); m.t.setAttribute("y", y);
       m.line.setAttribute("x1", m.x); m.line.setAttribute("x2", m.x);
       m.line.setAttribute("y1", base + 8); m.line.setAttribute("y2", y - 16);
-    });
+    }
     var rows = Math.max.apply(null, placed.map(function (o) { return o.k; })) + 1;
     svg.setAttribute("viewBox", "0 0 1000 " + (base + 54 + (rows - 1) * step + 14));
   }

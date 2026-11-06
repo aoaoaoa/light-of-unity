@@ -17,6 +17,8 @@
   --forest: #26410f;
   --teal: #136649;
   --plum: #4a3459;
+  --slate: #44636a;
+  --navy: #123a74;
   --paper: #f0ebe5;
   --paper-dim: rgba(240, 235, 229, .6);
   --paper-faint: rgba(240, 235, 229, .18);
@@ -41,6 +43,8 @@ body[data-ground="sage"]   { --ground: var(--sage); }
 body[data-ground="forest"] { --ground: var(--forest); }
 body[data-ground="teal"]   { --ground: var(--teal); }
 body[data-ground="plum"]   { --ground: var(--plum); }
+body[data-ground="slate"]  { --ground: var(--slate); }
+body[data-ground="navy"]   { --ground: var(--navy); }
 
 .stage {
   height: 100%;
@@ -115,7 +119,11 @@ a.label:hover { color: var(--paper); }
 .controls button:disabled { opacity: .3; cursor: default; }
 :focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
 
-@media (max-width: 560px) { .rail ol button { font-size: .62rem; letter-spacing: .08em; } }
+@media (max-width: 900px) {
+  .rail ol button { font-size: 0; padding-top: 10px; }
+  .rail ol button[aria-current="step"] { font-size: .7rem; white-space: nowrap; overflow: visible; }
+  .rail ol li:has(button[aria-current="step"]) { position: relative; z-index: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
   body, .w, .echo, .mark { transition: none; }
   .reading .long .statement { max-width: 26ch; font-size: clamp(1.5rem, min(3.6vw, 5vh), 3rem); }
@@ -145,7 +153,7 @@ a.label:hover { color: var(--paper); }
   var words = U.question.replace("?", "").toUpperCase().split(" ");
   var lines = [words[0], words[1], words[2] + " " + words[3], words[4] + " " + words[5], words[6] + "?"];
   var slides = [{ id: "cover", ground: "sage", rail: L.dateLabel }].concat(U.entries.map(function (e) {
-    return { id: e.id, ground: e.ground, entry: e, rail: e.echo ? (e.echo.year ? String(e.echo.year) : "n.d.") : "Opening" };
+    return { id: e.id, ground: e.ground, entry: e, rail: e.echo ? U.fmt.short(e.echo) : "Opening" };
   }));
 
   var vp = document.getElementById("viewport");
@@ -160,15 +168,14 @@ a.label:hover { color: var(--paper); }
       h += '<p class="statement">' + e.statement.split(" ").map(function (w) { return '<span class="w">' + esc(w) + "</span>"; }).join(" ") + "</p>";
       if (e.echo) {
         var c = e.echo;
-        h += '<figure class="echo"><blockquote><p>' + esc(c.text) + "</p></blockquote><figcaption><span class=\"yr\">" + (c.year || "n.d.") + "</span>" +
-          esc(c.author) + ", <cite>" + esc(c.work) + "</cite>" + (c.in ? ", in <cite>" + esc(c.in) + "</cite>" : "") + "</figcaption></figure>";
+        h += '<figure class="echo"><blockquote><p>' + esc(c.text) + "</p></blockquote><figcaption><span class=\"yr\">" + U.fmt.date(c) + "</span>" + U.fmt.source(c) + "</figcaption></figure>";
       }
     }
     return h + "</section>";
   }).join("");
 
   var rail = document.getElementById("rail");
-  rail.innerHTML = slides.map(function (s, i) { return '<li><button type="button" data-i="' + i + '"' + (s.rail === "n.d." ? ' class="nd"' : "") + ">" + esc(s.rail) + "</button></li>"; }).join("");
+  rail.innerHTML = slides.map(function (s, i) { return '<li><button type="button" data-i="' + i + '"' + (/^(n\.d\.|c\.)/.test(s.rail) ? ' class="nd"' : "") + ">" + esc(s.rail) + "</button></li>"; }).join("");
   rail.addEventListener("click", function (ev) { var b = ev.target.closest("button"); if (b) go(+b.dataset.i); });
 
   var cur = -1, timers = [];

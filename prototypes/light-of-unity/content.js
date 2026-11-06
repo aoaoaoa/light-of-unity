@@ -6,6 +6,8 @@
  * echo       passage from Bahá’í literature, with its source as printed
  * ground     colour of the original card: "sage" | "forest" | "teal" | "plum"
  * year       null when the card gives no date; shown as n.d.
+ * circa      approximate date as printed (year then holds a best estimate for ordering)
+ * article    true when work is an article, set in quotation marks rather than italic
  */
 window.UNITY = {
   question: "How powerful is the light of unity?",
@@ -111,6 +113,93 @@ window.UNITY = {
         work: "The Advent of Divine Justice",
         year: 1938
       }
+    },
+    {
+      id: "efforts-underway",
+      ground: "slate",
+      statement: "There are already significant efforts underway to learn how to create models of unity in neighborhoods and communities throughout the nation. Bahá’ís have been persistently engaged in such efforts for many years.",
+      echo: {
+        text: "Such an approach offers a striking contrast to the spiritually bankrupt and moribund ways of an old social order that so often seeks to harness human energy through domination, through greed, through guilt or through manipulation.",
+        author: "The Universal House of Justice",
+        work: "Riḍván 2010 message",
+        year: 2010
+      }
+    },
+    {
+      id: "unity-in-diversity",
+      ground: "slate",
+      statement: "The aim is not unity in sameness—it is unity in diversity. It is the recognition that everyone in this land has a part to play in contributing to the betterment of society, and that true prosperity, material and spiritual, will be available to us all to the degree that we live up to this standard.",
+      echo: {
+        text: "Oneness, of course, should not be confused with sameness, which is a tedious, artificial thing, entirely alien to a world where no two grains of wheat have ever been alike. The peculiar curse of the times is an effort at standardization; gum is chewed on the Himalayas, and everyone is trying desperately to be like everyone else…",
+        author: "Marzieh Gail",
+        work: "Dawn Over Mount Hira",
+        year: 1976
+      }
+    },
+    {
+      id: "what-is-being-done",
+      ground: "slate",
+      statement: "We should earnestly discover what is being done, what truly helps to make a difference, and why. We should share this knowledge throughout the country as a means of inspiring and assisting the work of others. If we do this, we could soon find ourselves in the midst of a mass transition toward racial justice.",
+      echo: {
+        text: "The essence of all that We have revealed for thee is Justice, is for man to free himself from idle fancy and imitation, discern with the eye of oneness His glorious handiwork, and look into all things with a searching eye.",
+        author: "Bahá’u’lláh",
+        work: "Words of Wisdom",
+        in: "Tablets of Bahá’u’lláh",
+        year: 1872,
+        circa: "early 1870s"
+      }
+    },
+    {
+      id: "children-of-god",
+      ground: "navy",
+      statement: "To understand and firmly believe that we are all children of God provides us with access to vast spiritual resources, motivating us to see beyond ourselves and to work steadily and sacrificially in the face of all obstacles.",
+      echo: {
+        text: "One can hardly imagine what a great influence genuine love, truthfulness and purity of motives exert on the souls of men. But these traits cannot be acquired by any believer unless he makes a daily effort to gain them…",
+        author: "Shoghi Effendi",
+        work: "The Compilation of Compilations",
+        volume: "vol. 2",
+        year: null
+      }
+    },
+    {
+      id: "twofold-process",
+      ground: "navy",
+      statement: "It helps to ensure that the process is consistent with the goal to create communities characterized by justice. It gives us the faith, strength, and creativity to transform our own hearts, as we also work for the transformation of society.",
+      echo: {
+        text: "Bahá’ís are committed to a twofold process of social change that includes the transformation of hearts and minds as well as the transformation of social norms and structures. They seek coherence between the means and ends of social change. They adopt a long-term perspective on change which calls for perseverance in a multi-generational struggle. They have faith in humanity’s long-term capacity for justice.",
+        author: "Michael Karlberg",
+        work: "The Constructive Imaginary",
+        article: true,
+        in: "The Journal of Bahá’í Studies",
+        year: 2020
+      }
     }
   ]
 };
+
+/* Shared formatting, so every variant cites the same way. */
+window.UNITY.fmt = (function (U) {
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  return {
+    esc: esc,
+    /* "1882", "c. early 1870s", "n.d." */
+    date: function (e) { return e.circa ? "c. " + e.circa : e.year ? String(e.year) : "n.d."; },
+    /* compact form for tight spaces: "1882", "c. 1870s", "n.d." */
+    short: function (e) { return e.circa ? "c. " + Math.floor(e.year / 10) * 10 + "s" : e.year ? String(e.year) : "n.d."; },
+    /* distance from the letter, or null when undated */
+    gap: function (e, unit) {
+      if (!e.year) return null;
+      var d = U.letter.year - e.year;
+      if (d === 0) return "Same year as the letter";
+      return (e.circa ? "About " : "") + d + " years " + (unit || "before the letter");
+    },
+    /* author, title, containing work; no date */
+    source: function (e) {
+      var more = e.volume || e.in;
+      var t = e.article ? "“" + esc(e.work) + (more ? ",”" : "”") : "<cite>" + esc(e.work) + "</cite>" + (more ? "," : "");
+      if (e.volume) t += " " + esc(e.volume) + (e.in ? "," : "");
+      if (e.in) t += " in <cite>" + esc(e.in) + "</cite>";
+      return esc(e.author) + ", " + t;
+    }
+  };
+})(window.UNITY);
