@@ -78,7 +78,7 @@ a:focus-visible{{outline:2px solid currentColor;outline-offset:3px}}
   <span class="label" style="color:var(--mute)">Bahá'ís of the United States · Juneteenth 2020</span>
   <h1>{esc(TITLE)}</h1>
   <div class="meta">
-    <p><b>Twenty-three sentences</b> from a letter of the National Spiritual Assembly of the Bahá'ís of the United States, dated June 19, 2020, read in sequence.</p>
+    <p><b>Selections</b> from a letter of the National Spiritual Assembly of the Bahá'ís of the United States, dated June 19, 2020.</p>
     <p>Beside each, an echo from Bahá'í literature.</p>
   </div>
   <nav class="key" aria-label="Sections">{"".join(f'<a href="#p{[i for i in ITEMS if i["si"]==si][0]["n"]}" title="{esc(s[0])}" style="--sw:var(--sw{si})"></a>' for si,s in enumerate(SECTIONS))}</nav>
