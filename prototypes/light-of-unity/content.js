@@ -4,7 +4,7 @@
  *
  * statement  text from the NSA letter (verbatim)
  * echo       passage from Bahá’í literature, with its source as printed
- * ground     colour of the original card: "sage" | "forest" | "teal" | "plum"
+ * ground     colour of the original card: "sage" | "forest" | "teal" | "plum" | "slate" | "navy" | "spruce" | "ocean"
  * year       null when the card gives no date; shown as n.d.
  * circa      approximate date as printed (year then holds a best estimate for ordering)
  * article    true when work is an article, set in quotation marks rather than italic
@@ -172,6 +172,61 @@ window.UNITY = {
         article: true,
         in: "The Journal of Bahá’í Studies",
         year: 2020
+      }
+    },
+    {
+      id: "tribulations",
+      ground: "spruce",
+      statement: "We believe that the tribulations now encompassing much of the world are the symptoms of humanity’s failure to understand and embrace our essential oneness.",
+      echo: {
+        text: "The Great Peace towards which people of good will throughout the centuries have inclined their hearts, of which seers and poets for countless generations have expressed their vision, and for which from age to age the sacred scriptures of mankind have constantly held the promise, is now at long last within the reach of the nations. For the first time in history it is possible for everyone to view the entire planet, with all its myriad diversified peoples, in one perspective.",
+        author: "The Universal House of Justice",
+        work: "The Promise of World Peace",
+        year: 1985
+      }
+    },
+    {
+      id: "interrelated-threats",
+      ground: "spruce",
+      statement: "The interrelated threats of climate change, gender discrimination, extreme wealth and poverty, unfair distribution of resources, and the like, all stem from this deficiency and can never be resolved if we do not awaken to our dependence upon each other.",
+      echo: {
+        text: "The well-being of mankind, its peace and security, are unattainable unless and until its unity is firmly established.",
+        author: "Bahá’u’lláh",
+        work: "Gleanings from the Writings of Bahá’u’lláh",
+        year: null
+      }
+    },
+    {
+      id: "neighborhood",
+      ground: "spruce",
+      statement: "The world has contracted to a neighborhood, and it is important to appreciate that what we do in America impacts not only our own country, but the entire planet.",
+      echo: {
+        text: "May the American people and their government unite in their efforts in order that this light may dawn from this point and spread to all regions, for this is one of the greatest bestowals of God. In order that America may avail herself of this opportunity, I beg that you strive and pray with heart and soul, devoting all your energies to this end: that the banner of international peace may be upraised here and that this democracy may be the cause of the cessation of warfare in all other countries.",
+        author: "‘Abdu’l-Bahá",
+        work: "The Promulgation of Universal Peace",
+        year: null
+      }
+    },
+    {
+      id: "world-peace",
+      ground: "ocean",
+      statement: "It is not an exaggeration to say that the cause of world peace is linked to our success in resolving the issue of racial injustice.",
+      echo: {
+        text: "Until the reality of equality between man and woman is fully established and attained, the highest social development of mankind is not possible.",
+        author: "‘Abdu’l-Bahá",
+        work: "The Promulgation of Universal Peace",
+        year: null
+      }
+    },
+    {
+      id: "foundation-of-our-future",
+      ground: "ocean",
+      statement: "The oneness of humanity is the foundation of our future. Its realization is the inevitable next stage in our life on this planet.",
+      echo: {
+        text: "The long ages of infancy and childhood, through which the human race had to pass, have receded into the background. Humanity is now experiencing the commotions invariably associated with the most turbulent stage of its evolution, the stage of adolescence, when the impetuosity of youth and its vehemence reach their climax, and must gradually be superseded by the calmness, the wisdom, and the maturity that characterize the stage of manhood.",
+        author: "Shoghi Effendi",
+        work: "The World Order of Bahá’u’lláh",
+        year: null
       }
     }
   ]
