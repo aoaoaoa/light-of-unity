@@ -18,6 +18,8 @@
   --forest-deep: #213a0b;
   --teal: #19704f;
   --teal-deep: #0f6045;
+  --plum: #503a5f;
+  --plum-deep: #412a4f;
   --paper: #f0ebe5;
   --paper-dim: rgba(240, 235, 229, .62);
   --paper-faint: rgba(240, 235, 229, .22);
@@ -52,6 +54,7 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
 }
 .leaf[data-ground="sage"]   { background: radial-gradient(120% 90% at 85% 0%, #93b59a 0%, var(--sage) 45%, var(--sage-deep) 100%); }
 .leaf[data-ground="forest"] { background: radial-gradient(120% 90% at 85% 0%, #375617 0%, var(--forest) 45%, var(--forest-deep) 100%); }
+.leaf[data-ground="plum"]   { background: radial-gradient(120% 90% at 85% 0%, #5d4a6c 0%, var(--plum) 45%, var(--plum-deep) 100%); }
 .leaf[data-ground="teal"]   { background: radial-gradient(120% 90% at 85% 0%, #237b58 0%, var(--teal) 45%, var(--teal-deep) 100%); }
 .inner { max-width: 1120px; margin: 0 auto; position: relative; }
 
@@ -222,7 +225,7 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
   function cite(e) {
     var s = esc(e.author) + ", <cite>" + esc(e.work) + "</cite>";
     if (e.in) s += ", in <cite>" + esc(e.in) + "</cite>";
-    return s + " (" + e.year + ")";
+    return s + " (" + (e.year || "n.d.") + ")";
   }
 
   var words = U.question.replace("?", "").toUpperCase().split(" ");
@@ -243,9 +246,9 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
       '<p class="kicker"><span>Passage ' + roman[i] + " of " + roman[U.entries.length - 1] + "</span><span>" + esc(U.letter.dateLabel) + "</span></p>" +
       '<blockquote class="statement"><p>' + esc(en.statement) + "</p></blockquote>";
     if (en.echo) {
-      var gap = U.letter.year - en.echo.year;
+      var y = en.echo.year;
       html += '<figure class="echo">' +
-        '<p class="year">' + en.echo.year + '<span class="distance">' + gap + " years before the letter</span></p>" +
+        '<p class="year">' + (y || "n.d.") + '<span class="distance">' + (y ? (U.letter.year - y) + " years before the letter" : "No date on the card") + "</span></p>" +
         '<div class="echo-body"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote>" +
         "<figcaption>" + cite(en.echo) + "</figcaption></div></figure>";
     }
@@ -253,11 +256,11 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
   });
 
   var dated = U.entries.filter(function (e) { return e.echo; }).map(function (e) { return e.echo; })
-    .sort(function (a, b) { return a.year - b.year; });
+    .sort(function (a, b) { return (a.year || 1e4) - (b.year || 1e4); });
   html += '<section class="leaf colophon" data-ground="forest"><div class="inner">' +
     "<h2>Sources, in order of writing</h2><ol class=\"ledger\">" +
     dated.map(function (e) {
-      return "<li><b>" + e.year + "</b><span>" + esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + "</span></li>";
+      return "<li><b>" + (e.year || "n.d.") + "</b><span>" + esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + "</span></li>";
     }).join("") +
     "<li><b>" + U.letter.year + "</b><span>" + esc(U.letter.body) + ", letter dated " + esc(U.letter.dateLabel) + "</span></li>" +
     '</ol><a class="back" href="index.html">All variants</a></div></section>';

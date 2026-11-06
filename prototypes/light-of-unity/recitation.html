@@ -16,6 +16,7 @@
   --sage: #86a98e;
   --forest: #26410f;
   --teal: #136649;
+  --plum: #4a3459;
   --paper: #f0ebe5;
   --paper-dim: rgba(240, 235, 229, .6);
   --paper-faint: rgba(240, 235, 229, .18);
@@ -39,6 +40,7 @@ body {
 body[data-ground="sage"]   { --ground: var(--sage); }
 body[data-ground="forest"] { --ground: var(--forest); }
 body[data-ground="teal"]   { --ground: var(--teal); }
+body[data-ground="plum"]   { --ground: var(--plum); }
 
 .stage {
   height: 100%;
@@ -63,7 +65,7 @@ body[data-ground="sage"] .mark { opacity: 0; }
 a.label { text-decoration: none; }
 a.label:hover { color: var(--paper); }
 
-.viewport { position: relative; overflow-y: auto; display: grid; align-items: center; }
+.viewport { position: relative; overflow-y: auto; display: grid; align-items: safe center; }
 .slide { max-width: 1100px; width: 100%; margin: 0 auto; padding-block: 40px; display: grid; gap: clamp(28px, 5vh, 56px); }
 .slide[hidden] { display: none !important; }
 
@@ -78,6 +80,9 @@ a.label:hover { color: var(--paper); }
   margin: 0; max-width: 22ch;
   font-weight: 700; font-size: clamp(1.8rem, min(5vw, 7vh), 4.4rem); line-height: 1.05; letter-spacing: -.02em;
 }
+.long .statement { max-width: 26ch; font-size: clamp(1.5rem, min(3.6vw, 5vh), 3rem); }
+.long .echo p { font-size: clamp(.98rem, 1.25vw, 1.12rem); }
+.rail ol button.nd { text-transform: none; letter-spacing: .06em; }
 .w { opacity: 1; transition: opacity .5s ease; }
 .reading .w { opacity: .16; }
 .reading .w.lit { opacity: 1; }
@@ -113,7 +118,10 @@ a.label:hover { color: var(--paper); }
 @media (max-width: 560px) { .rail ol button { font-size: .62rem; letter-spacing: .08em; } }
 @media (prefers-reduced-motion: reduce) {
   body, .w, .echo, .mark { transition: none; }
-  .reading .w { opacity: 1; } .reading .echo { opacity: 1; transform: none; }
+  .reading .long .statement { max-width: 26ch; font-size: clamp(1.5rem, min(3.6vw, 5vh), 3rem); }
+.long .echo p { font-size: clamp(.98rem, 1.25vw, 1.12rem); }
+.rail ol button.nd { text-transform: none; letter-spacing: .06em; }
+.w { opacity: 1; } .reading .echo { opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -137,12 +145,13 @@ a.label:hover { color: var(--paper); }
   var words = U.question.replace("?", "").toUpperCase().split(" ");
   var lines = [words[0], words[1], words[2] + " " + words[3], words[4] + " " + words[5], words[6] + "?"];
   var slides = [{ id: "cover", ground: "sage", rail: L.dateLabel }].concat(U.entries.map(function (e) {
-    return { id: e.id, ground: e.ground, entry: e, rail: e.echo ? String(e.echo.year) : "Opening" };
+    return { id: e.id, ground: e.ground, entry: e, rail: e.echo ? (e.echo.year ? String(e.echo.year) : "n.d.") : "Opening" };
   }));
 
   var vp = document.getElementById("viewport");
   vp.innerHTML = slides.map(function (s, i) {
-    var h = '<section class="slide" id="s-' + s.id + '" aria-label="' + (i ? "Passage " + i : "Title") + '" hidden>';
+    var long = s.entry && (s.entry.statement.length + (s.entry.echo ? s.entry.echo.text.length : 0)) > 520;
+    var h = '<section class="slide' + (long ? " long" : "") + '" id="s-' + s.id + '" aria-label="' + (i ? "Passage " + i : "Title") + '" hidden>';
     if (!s.entry) {
       h += '<h1 class="question" aria-label="' + esc(U.question) + '">' + lines.map(function (l) { return "<span>" + l + "</span>"; }).join("") + "</h1>" +
         '<p class="prov">From a letter of the ' + esc(L.body) + ", dated " + esc(L.dateLabel) + ". " + esc(U.note) + "</p>";
@@ -151,7 +160,7 @@ a.label:hover { color: var(--paper); }
       h += '<p class="statement">' + e.statement.split(" ").map(function (w) { return '<span class="w">' + esc(w) + "</span>"; }).join(" ") + "</p>";
       if (e.echo) {
         var c = e.echo;
-        h += '<figure class="echo"><blockquote><p>' + esc(c.text) + "</p></blockquote><figcaption><span class=\"yr\">" + c.year + "</span>" +
+        h += '<figure class="echo"><blockquote><p>' + esc(c.text) + "</p></blockquote><figcaption><span class=\"yr\">" + (c.year || "n.d.") + "</span>" +
           esc(c.author) + ", <cite>" + esc(c.work) + "</cite>" + (c.in ? ", in <cite>" + esc(c.in) + "</cite>" : "") + "</figcaption></figure>";
       }
     }
@@ -159,7 +168,7 @@ a.label:hover { color: var(--paper); }
   }).join("");
 
   var rail = document.getElementById("rail");
-  rail.innerHTML = slides.map(function (s, i) { return '<li><button type="button" data-i="' + i + '">' + esc(s.rail) + "</button></li>"; }).join("");
+  rail.innerHTML = slides.map(function (s, i) { return '<li><button type="button" data-i="' + i + '"' + (s.rail === "n.d." ? ' class="nd"' : "") + ">" + esc(s.rail) + "</button></li>"; }).join("");
   rail.addEventListener("click", function (ev) { var b = ev.target.closest("button"); if (b) go(+b.dataset.i); });
 
   var cur = -1, timers = [];

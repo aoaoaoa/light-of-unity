@@ -4,7 +4,8 @@
  *
  * statement  text from the NSA letter (verbatim)
  * echo       passage from Bahá’í literature, with its source as printed
- * ground     colour of the original card: "sage" | "forest" | "teal"
+ * ground     colour of the original card: "sage" | "forest" | "teal" | "plum"
+ * year       null when the card gives no date; shown as n.d.
  */
 window.UNITY = {
   question: "How powerful is the light of unity?",
@@ -54,6 +55,61 @@ window.UNITY = {
         work: "Words of Paradise",
         in: "Tablets of Bahá’u’lláh",
         year: 1890
+      }
+    },
+    {
+      id: "relationships",
+      ground: "teal",
+      statement: "Our efforts can only succeed when we learn to build relationships with each other based on sincere friendship, regard, and trust, which, in turn, become pillars for the activities of our institutions and communities.",
+      echo: {
+        text: "One must see in every human being only that which is worthy of praise. When this is done, one can be a friend to the whole human race. If, however, we look at people from the standpoint of their faults, then being a friend to them is a formidable task.",
+        author: "‘Abdu’l-Bahá",
+        work: "Selections from the Writings of ‘Abdu’l-Bahá",
+        year: null
+      }
+    },
+    {
+      id: "join-hands",
+      ground: "teal",
+      statement: "It is essential for us to join hands in a process of learning how to create models of what we want to see in every dimension of American life, as we learn to apply the principle of oneness through practical engagement and experience.",
+      echo: {
+        text: "…whatever the level of activity in a cluster, it is the capacity for learning among the local friends, within a common framework, that fosters progress along the path of development. Everyone has a share in this enterprise; the contribution of each serves to enrich the whole.",
+        author: "The Universal House of Justice",
+        work: "Riḍván 2014 message",
+        year: 2014
+      }
+    },
+    {
+      id: "truthful-discourse",
+      ground: "plum",
+      statement: "An essential element of the process will be honest and truthful discourse about current conditions and their causes, and understanding, in particular, the deeply entrenched notions of anti-Blackness that pervade our society.",
+      echo: {
+        text: "‘Abdu’l-Bahá did not hesitate to introduce into His relations with Western believers actions that summoned them to a level of consciousness far above mere social liberalism and tolerance.",
+        author: "The Universal House of Justice",
+        work: "Century of Light",
+        year: 2001
+      }
+    },
+    {
+      id: "hear-and-acknowledge",
+      ground: "plum",
+      statement: "We must build the capacity to truly hear and acknowledge the voices of those who have directly suffered from the effects of racism.",
+      echo: {
+        text: "Racial discrimination is baneful because it violates the dignity of human beings. And yet it persists. Racism is poisonous because it cripples its victims, corrupts its perpetrators, and blights human progress. And yet it persists. Why? We believe that racism persists precisely because it is deeply rooted in outdated attitudes and erroneous beliefs.",
+        author: "Bahá’í International Community",
+        work: "Eliminating Racism",
+        year: 1989
+      }
+    },
+    {
+      id: "constructive-action",
+      ground: "plum",
+      statement: "This capacity should manifest itself in our schools, the media, and other civic arenas, as well as in our work and personal relations. This should not end with words, but lead to meaningful, constructive action.",
+      echo: {
+        text: "As to racial prejudice, the corrosion of which, for well-nigh a century, has bitten into the fiber, and attacked the whole social structure of American society, it should be regarded as constituting the most vital and challenging issue confronting the Bahá’í community at the present stage of its evolution. The ceaseless exertions which this issue of paramount importance calls for, the sacrifices it must impose, the care and vigilance it demands, the moral courage and fortitude it requires, the tact and sympathy it necessitates, invest this problem, which the American believers are still far from having satisfactorily resolved, with an urgency and importance that cannot be overestimated.",
+        author: "Shoghi Effendi",
+        work: "The Advent of Divine Justice",
+        year: 1938
       }
     }
   ]

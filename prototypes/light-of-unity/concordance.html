@@ -158,7 +158,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   var U = window.UNITY, L = U.letter;
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function cite(e) {
-    return esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + " (" + e.year + ")";
+    return esc(e.author) + ", <cite>" + esc(e.work) + "</cite>" + (e.in ? ", in <cite>" + esc(e.in) + "</cite>" : "") + " (" + (e.year || "n.d.") + ")";
   }
 
   document.getElementById("kicker").textContent = "A concordance · " + L.dateLabel;
@@ -166,15 +166,19 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   document.getElementById("lede").innerHTML = "Passages from a letter of the " + esc(L.body) + ", dated " + esc(L.dateLabel) +
     ", each set opposite an <em>echo</em> from earlier Bahá’í writings.";
   document.getElementById("head-letter").textContent = "The letter, " + L.year;
-  document.getElementById("foot").textContent = U.entries.filter(function (e) { return e.echo; }).length + " echoes across " +
-    (L.year - Math.min.apply(null, U.entries.filter(function (e) { return e.echo; }).map(function (e) { return e.echo.year; }))) + " years";
+  var withEcho = U.entries.filter(function (e) { return e.echo; });
+  var years = withEcho.map(function (e) { return e.echo.year; }).filter(Boolean);
+  var undated = withEcho.length - years.length;
+  document.getElementById("foot").textContent = withEcho.length + " echoes across " + (L.year - Math.min.apply(null, years)) + " years" +
+    (undated ? " · " + undated + " undated" : "");
 
   // rows
   var rows = document.getElementById("rows");
   rows.innerHTML = U.entries.map(function (en) {
     var right, mid;
     if (en.echo) {
-      mid = "<b>" + en.echo.year + "</b><span>" + (L.year - en.echo.year) + " years earlier</span>";
+      mid = en.echo.year ? "<b>" + en.echo.year + "</b><span>" + (L.year - en.echo.year) + " years earlier</span>"
+        : "<b>n.d.</b><span>No date on the card</span>";
       right = '<figure class="echo"><blockquote><p>' + esc(en.echo.text) + "</p></blockquote><figcaption>" + cite(en.echo) + "</figcaption></figure>";
     } else {
       mid = "";
@@ -186,7 +190,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 
   // span chart
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("chart");
-  var x0 = 40, x1 = 960, base = 140, from = 1870, to = 2030;
+  var x0 = 40, x1 = 960, base = 150, from = 1870, to = 2030, step = 26;
   function X(y) { return x0 + (y - from) / (to - from) * (x1 - x0); }
   function el(n, a, p) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
   for (var t = 1900; t <= 2000; t += 25) {
@@ -194,31 +198,58 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     el("text", { x: X(t), y: base + 26, "text-anchor": "middle", "class": "tick-label" }).textContent = t;
   }
   el("line", { x1: x0, x2: x1, y1: base, y2: base, "class": "axis" });
-  var echoes = U.entries.filter(function (e) { return e.echo; }).slice().sort(function (p, q) { return p.echo.year - q.echo.year; });
-  var levels = [56, 82];
-  function label(g, x, year, text, k, right) {
-    var y = base + levels[k % 2];
-    el("line", { x1: x, x2: x, y1: base + 8, y2: y - 16, "class": "tick" }, g);
-    var t = el("text", { x: right ? x + 4 : x - 4, y: y, "text-anchor": right ? "end" : "start", "class": "who" }, g);
-    var b = document.createElementNS(NS, "tspan"); b.setAttribute("class", "yr"); b.textContent = year + " ";
-    t.appendChild(b); t.appendChild(document.createTextNode(text));
-  }
-  var cut = X(1990), lefts = echoes.filter(function (e) { return X(e.echo.year) <= cut; }).length;
-  echoes.forEach(function (en, i) {
-    var right = X(en.echo.year) > cut;
-    var k = right ? i - lefts : lefts - 1 - i;
-    var g = el("g", { "data-id": en.id, tabindex: "0" });
+
+  var echoes = withEcho.filter(function (e) { return e.echo.year; }).sort(function (p, q) { return p.echo.year - q.echo.year; });
+  var marks = echoes.map(function (en) {
+    var g = el("g", { "data-id": en.id });
     var a = X(en.echo.year), b = X(L.year), d = L.year - en.echo.year;
-    var peak = 16 + d / (to - from) * 104;
+    var peak = 12 + d / (to - from) * 124;
     el("path", { d: "M" + b + " " + base + " Q " + (a + b) / 2 + " " + (base - 2 * peak) + " " + a + " " + base, "class": "arc" }, g);
     el("circle", { cx: a, cy: base, r: 6, "class": "node" }, g);
-    label(g, a, en.echo.year, en.echo.work, k, right);
     g.addEventListener("mouseenter", function () { mark(en.id); });
     g.addEventListener("mouseleave", function () { mark(null); });
     g.addEventListener("click", function () { document.getElementById(en.id).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); });
+    return { g: g, x: a, year: en.echo.year, text: en.echo.work };
   });
   el("circle", { cx: X(L.year), cy: base, r: 7, "class": "node letter" });
-  label(svg, X(L.year), L.year, "the letter", echoes.length - lefts, true);
+  marks.push({ g: svg, x: X(L.year), year: L.year, text: "the letter" });
+
+  // Labels hang below the axis on leader lines. Each takes the shallowest row where it
+  // overlaps no other label and no leader passes through it. Labels point toward the
+  // centre, so placing the innermost first lets outer ones step down beneath them.
+  var mid = (x0 + x1) / 2, placed = [];
+  marks.forEach(function (m) {
+    m.right = m.x > mid;
+    m.t = el("text", { "class": "who", "text-anchor": m.right ? "end" : "start" }, m.g);
+    var b = document.createElementNS(NS, "tspan"); b.setAttribute("class", "yr"); b.textContent = m.year + " ";
+    m.t.appendChild(b); m.t.appendChild(document.createTextNode(m.text));
+    m.line = el("line", { "class": "tick" }, m.g);
+  });
+  function layout() {
+    placed = [];
+    var order = marks.slice().sort(function (p, q) { return Math.abs(p.x - mid) - Math.abs(q.x - mid); });
+    order.forEach(function (m) {
+      var w = m.t.getComputedTextLength() || m.text.length * 8 + 50;
+      var lo = m.right ? m.x + 4 - w : m.x - 4, hi = lo + w;
+      for (var k = 0; ; k++) {
+        var ok = placed.every(function (o) {
+          if (o.k === k && lo < o.hi + 14 && hi > o.lo - 14) return false;
+          if (o.k < k && m.x > o.lo - 6 && m.x < o.hi + 6) return false;
+          if (o.k > k && o.x > lo - 6 && o.x < hi + 6) return false;
+          return true;
+        });
+        if (ok || k > 12) { placed.push({ k: k, lo: lo, hi: hi, x: m.x }); m.k = k; break; }
+      }
+      var y = base + 54 + m.k * step;
+      m.t.setAttribute("x", m.right ? m.x + 4 : m.x - 4); m.t.setAttribute("y", y);
+      m.line.setAttribute("x1", m.x); m.line.setAttribute("x2", m.x);
+      m.line.setAttribute("y1", base + 8); m.line.setAttribute("y2", y - 16);
+    });
+    var rows = Math.max.apply(null, placed.map(function (o) { return o.k; })) + 1;
+    svg.setAttribute("viewBox", "0 0 1000 " + (base + 54 + (rows - 1) * step + 14));
+  }
+  layout();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
   function mark(id) {
     document.querySelectorAll("[data-id]").forEach(function (n) { n.classList.toggle("on", n.getAttribute("data-id") === id); });
