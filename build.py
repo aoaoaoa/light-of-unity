@@ -41,7 +41,7 @@ def build_a():
 :root[data-theme="dark"]{{--paper:#0e1411;--ink:#eef1ec;--mute:#9aa79f;--rule:#2a3630;--band-bg:var(--d);--band-fg:#f3f1ea;--band-mute:rgba(243,241,234,.62);--band-rule:rgba(243,241,234,.22);color-scheme:dark}}
 *{{box-sizing:border-box}}
 body{{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.45}}
-.inner{{max-width:1180px;margin:0 auto;{GUT}}}
+.inner{{max-width:1440px;margin:0 auto;{GUT}}}
 .label{{font-family:var(--display);font-stretch:85%;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase}}
 /* cover */
 .cover{{padding-block:clamp(48px,9vw,120px) clamp(40px,6vw,80px);border-bottom:1px solid var(--rule)}}
@@ -126,13 +126,13 @@ def build_b():
 :root[data-theme="dark"]{{--paper:#101412;--ink:#ecefe9;--mute:#98a39c;--rule:#2b332e;--tint:var(--cl);color-scheme:dark}}
 *{{box-sizing:border-box}}
 body{{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:19px;line-height:1.5}}
-.wrap{{max-width:1100px;margin:0 auto;{GUT}padding-block:clamp(40px,7vw,96px) clamp(48px,8vw,110px)}}
-.head{{display:grid;grid-template-columns:minmax(0,62ch) 1fr;grid-template-rows:auto auto;gap:0 40px;align-items:end;border-bottom:1px solid var(--rule);padding-bottom:28px;margin-bottom:clamp(36px,5vw,72px)}}
+.wrap{{max-width:1360px;margin:0 auto;{GUT}padding-block:clamp(40px,7vw,96px) clamp(48px,8vw,110px)}}
+.head{{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);grid-template-rows:auto auto;gap:0 40px;align-items:end;border-bottom:1px solid var(--rule);padding-bottom:28px;margin-bottom:clamp(36px,5vw,72px)}}
 .eyebrow{{font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0;grid-column:1/-1;line-height:1.7;padding-bottom:clamp(28px,4vw,44px)}}
 h1{{font-weight:300;font-size:clamp(50px,8.4vw,108px);line-height:1;grid-column:1;letter-spacing:-.025em;margin:0;text-wrap:balance;font-variation-settings:"opsz" 144}}
 h1 em{{font-style:italic;font-weight:400}}
 .head .desc{{grid-column:2;font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--mute);margin:0;max-width:34ch}}
-.row{{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,1fr);gap:0 clamp(28px,5vw,80px);position:relative}}
+.row{{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:0 clamp(28px,5vw,80px);position:relative}}
 .row+.row{{margin-top:clamp(20px,2.6vw,34px)}}
 .line{{margin:0;font-size:clamp(20px,1.9vw,26px);line-height:1.42;font-weight:300;font-variation-settings:"opsz" 30;text-wrap:pretty;position:relative}}
 .line::before{{content:"";position:absolute;left:-14px;top:.5em;bottom:.3em;width:3px;background:var(--tint);border-radius:2px}}
@@ -142,7 +142,7 @@ h1 em{{font-style:italic;font-weight:400}}
 .gloss p{{margin:0;font-style:italic}}
 .gloss cite{{grid-column:2;font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:2px}}
 .gloss cite::before{{content:"";display:inline-block;width:10px;height:2px;background:var(--tint);vertical-align:middle;margin-right:8px}}
-.coda{{border-top:1px solid var(--rule);margin-top:clamp(40px,6vw,80px);padding-top:32px;display:grid;grid-template-columns:minmax(0,62ch) minmax(0,1fr);gap:32px clamp(28px,5vw,80px)}}
+.coda{{border-top:1px solid var(--rule);margin-top:clamp(40px,6vw,80px);padding-top:32px;display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:32px clamp(28px,5vw,80px)}}
 .coda h2{{font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 14px;font-weight:600}}
 .coda ol{{list-style:none;margin:0;padding:0;font-family:var(--sans);font-size:13.5px;line-height:1.5;display:grid;gap:6px}}
 .coda li{{display:grid;grid-template-columns:1.6em 1fr;gap:8px}}
